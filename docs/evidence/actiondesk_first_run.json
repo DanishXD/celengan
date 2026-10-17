@@ -1,0 +1,274 @@
+{
+  "artifact": "actiondesk_first_run",
+  "generated_at": "2026-10-17T19:41:53",
+  "app_version": "0.1.0",
+  "deterministic": true,
+  "llm_used": false,
+  "network_used": false,
+  "seed": 42,
+  "receipts": [
+    {
+      "id": "R001",
+      "finding_id": "L001",
+      "playbook": "cancel_subscription",
+      "tier": 2,
+      "status": "autopilot_active",
+      "subject": "Autopilot: pause GymFlow at next renewal",
+      "generator": "policy",
+      "impact_monthly": 29.0,
+      "impact_note": "saves ~$29.00/month ($348.00/year)",
+      "evidence_txn_ids": [
+        "T0009",
+        "T0041",
+        "T0074",
+        "T0105",
+        "T0136",
+        "T0176"
+      ]
+    },
+    {
+      "id": "R002",
+      "finding_id": "L002",
+      "playbook": "claim_fee_refund",
+      "tier": 1,
+      "status": "draft_ready",
+      "subject": "Fee waiver request — $15.00 (Card Penalty (Fees))",
+      "generator": "template",
+      "impact_monthly": 15.0,
+      "impact_note": "one-time credit of ~$15.00 expected",
+      "evidence_txn_ids": [
+        "T0096"
+      ]
+    },
+    {
+      "id": "R003",
+      "finding_id": "L003",
+      "playbook": "dispute_duplicate",
+      "tier": 1,
+      "status": "draft_ready",
+      "subject": "Duplicate charge dispute — $13.49 (StreamVibe)",
+      "generator": "template",
+      "impact_monthly": 13.49,
+      "impact_note": "one-time credit of ~$13.49 expected",
+      "evidence_txn_ids": [
+        "T0089",
+        "T0090"
+      ]
+    }
+  ],
+  "post_action_forecast": {
+    "state": "current",
+    "window_days": 40,
+    "doom_day": null,
+    "lowest_balance": 66.64,
+    "applied_exclusions": [
+      "GymFlow"
+    ],
+    "applied_credits_total": 28.49,
+    "applied_discounts": {},
+    "points": [
+      {
+        "day_offset": 1,
+        "date": "2026-10-18",
+        "balance": 668.68
+      },
+      {
+        "day_offset": 2,
+        "date": "2026-10-19",
+        "balance": 127.79
+      },
+      {
+        "day_offset": 3,
+        "date": "2026-10-20",
+        "balance": 138.4
+      },
+      {
+        "day_offset": 4,
+        "date": "2026-10-21",
+        "balance": 259.87
+      },
+      {
+        "day_offset": 5,
+        "date": "2026-10-22",
+        "balance": 229.98
+      },
+      {
+        "day_offset": 6,
+        "date": "2026-10-23",
+        "balance": 219.08
+      },
+      {
+        "day_offset": 7,
+        "date": "2026-10-24",
+        "balance": 208.19
+      },
+      {
+        "day_offset": 8,
+        "date": "2026-10-25",
+        "balance": 167.31
+      },
+      {
+        "day_offset": 9,
+        "date": "2026-10-26",
+        "balance": 140.07
+      },
+      {
+        "day_offset": 10,
+        "date": "2026-10-27",
+        "balance": 129.18
+      },
+      {
+        "day_offset": 11,
+        "date": "2026-10-28",
+        "balance": 118.29
+      },
+      {
+        "day_offset": 12,
+        "date": "2026-10-29",
+        "balance": 107.4
+      },
+      {
+        "day_offset": 13,
+        "date": "2026-10-30",
+        "balance": 96.5
+      },
+      {
+        "day_offset": 14,
+        "date": "2026-10-31",
+        "balance": 505.71
+      },
+      {
+        "day_offset": 15,
+        "date": "2026-11-01",
+        "balance": 494.82
+      },
+      {
+        "day_offset": 16,
+        "date": "2026-11-02",
+        "balance": 483.92
+      },
+      {
+        "day_offset": 17,
+        "date": "2026-11-03",
+        "balance": 473.03
+      },
+      {
+        "day_offset": 18,
+        "date": "2026-11-04",
+        "balance": 397.45
+      },
+      {
+        "day_offset": 19,
+        "date": "2026-11-05",
+        "balance": 386.56
+      },
+      {
+        "day_offset": 20,
+        "date": "2026-11-06",
+        "balance": 375.66
+      },
+      {
+        "day_offset": 21,
+        "date": "2026-11-07",
+        "balance": 364.77
+      },
+      {
+        "day_offset": 22,
+        "date": "2026-11-08",
+        "balance": 353.88
+      },
+      {
+        "day_offset": 23,
+        "date": "2026-11-09",
+        "balance": 342.98
+      },
+      {
+        "day_offset": 24,
+        "date": "2026-11-10",
+        "balance": 332.09
+      },
+      {
+        "day_offset": 25,
+        "date": "2026-11-11",
+        "balance": 321.2
+      },
+      {
+        "day_offset": 26,
+        "date": "2026-11-12",
+        "balance": 310.31
+      },
+      {
+        "day_offset": 27,
+        "date": "2026-11-13",
+        "balance": 283.07
+      },
+      {
+        "day_offset": 28,
+        "date": "2026-11-14",
+        "balance": 692.28
+      },
+      {
+        "day_offset": 29,
+        "date": "2026-11-15",
+        "balance": 681.39
+      },
+      {
+        "day_offset": 30,
+        "date": "2026-11-16",
+        "balance": 654.5
+      },
+      {
+        "day_offset": 31,
+        "date": "2026-11-17",
+        "balance": 634.62
+      },
+      {
+        "day_offset": 32,
+        "date": "2026-11-18",
+        "balance": 93.74
+      },
+      {
+        "day_offset": 33,
+        "date": "2026-11-19",
+        "balance": 75.86
+      },
+      {
+        "day_offset": 34,
+        "date": "2026-11-20",
+        "balance": 197.32
+      },
+      {
+        "day_offset": 35,
+        "date": "2026-11-21",
+        "balance": 167.43
+      },
+      {
+        "day_offset": 36,
+        "date": "2026-11-22",
+        "balance": 140.2
+      },
+      {
+        "day_offset": 37,
+        "date": "2026-11-23",
+        "balance": 129.3
+      },
+      {
+        "day_offset": 38,
+        "date": "2026-11-24",
+        "balance": 88.42
+      },
+      {
+        "day_offset": 39,
+        "date": "2026-11-25",
+        "balance": 77.53
+      },
+      {
+        "day_offset": 40,
+        "date": "2026-11-26",
+        "balance": 66.64
+      }
+    ]
+  },
+  "kill_switch_enforcement": "tier-2 play rejected while kill switch engaged",
+  "audit_events": 13
+}

@@ -56,6 +56,13 @@ def detect_subscription_creep(
                     ),
                     evidence_txn_ids=r.txn_ids,
                     playbook=PLAYBOOK[LeakType.SUBSCRIPTION_CREEP],
+                    context={
+                        "occurrences": r.occurrences,
+                        "uses_90d": used,
+                        "expected_uses": expected_uses,
+                        "cadence_days": r.cadence_days,
+                        "price": r.median_amount,
+                    },
                 )
             )
     return findings
@@ -90,6 +97,11 @@ def detect_duplicate_charges(txns: list[Txn], max_gap_days: int = 2) -> list[Lea
                         ),
                         evidence_txn_ids=(a.id, b.id),
                         playbook=PLAYBOOK[LeakType.DUPLICATE_CHARGE],
+                        context={
+                            "gap_days": gap,
+                            "dates": [a.date.isoformat(), b.date.isoformat()],
+                            "amount": amount,
+                        },
                     )
                 )
     return findings
@@ -127,6 +139,7 @@ def detect_hidden_fees(
                     ),
                     evidence_txn_ids=tuple(t.id for t in rows),
                     playbook=PLAYBOOK[LeakType.HIDDEN_FEE],
+                    context={"count": len(rows), "total": round(float(sum(amounts)), 2)},
                 )
             )
         else:
@@ -145,6 +158,7 @@ def detect_hidden_fees(
                     ),
                     evidence_txn_ids=tuple(t.id for t in rows),
                     playbook=PLAYBOOK[LeakType.HIDDEN_FEE],
+                    context={"count": len(rows), "total": round(float(sum(amounts)), 2), "one_off": True},
                 )
             )
     return findings
@@ -186,6 +200,11 @@ def detect_silent_price_hikes(
                     ),
                     evidence_txn_ids=r.txn_ids[-confirm_occurrences:],
                     playbook=PLAYBOOK[LeakType.SILENT_PRICE_HIKE],
+                    context={
+                        "previous_price": round(baseline, 2),
+                        "new_price": round(new_price, 2),
+                        "pct": round(pct, 1),
+                    },
                 )
             )
     return findings

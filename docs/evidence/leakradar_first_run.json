@@ -1,6 +1,6 @@
 {
   "artifact": "leakradar_first_run",
-  "generated_at": "2026-10-17T19:30:19",
+  "generated_at": "2026-10-17T19:41:53",
   "app_version": "0.1.0",
   "python_version": "3.14.4",
   "deterministic": true,
@@ -133,7 +133,7 @@
       "impact_annual": 15.0,
       "confidence": 0.95,
       "title": "Penalty fee from Card Penalty (Fees)",
-      "rationale": "1 penalty charge(s) totaling $15.00. One-off \u2014 often refundable on first offense.",
+      "rationale": "1 penalty charge(s) totaling $15.00. One-off — often refundable on first offense.",
       "evidence_txn_ids": [
         "T0096"
       ],
@@ -197,10 +197,216 @@
     "monthly_impact": 65.44,
     "annual_impact": 785.28
   },
-  "forecast": {
+  "baseline": {
+    "state": "baseline",
     "window_days": 40,
     "doom_day": "2026-11-19",
-    "lowest_balance": -19.85
+    "lowest_balance": -19.85,
+    "applied_exclusions": [],
+    "applied_credits_total": 0,
+    "applied_discounts": {},
+    "points": [
+      {
+        "day_offset": 1,
+        "date": "2026-10-18",
+        "balance": 668.68
+      },
+      {
+        "day_offset": 2,
+        "date": "2026-10-19",
+        "balance": 98.79
+      },
+      {
+        "day_offset": 3,
+        "date": "2026-10-20",
+        "balance": 80.91
+      },
+      {
+        "day_offset": 4,
+        "date": "2026-10-21",
+        "balance": 202.38
+      },
+      {
+        "day_offset": 5,
+        "date": "2026-10-22",
+        "balance": 172.49
+      },
+      {
+        "day_offset": 6,
+        "date": "2026-10-23",
+        "balance": 161.59
+      },
+      {
+        "day_offset": 7,
+        "date": "2026-10-24",
+        "balance": 150.7
+      },
+      {
+        "day_offset": 8,
+        "date": "2026-10-25",
+        "balance": 109.82
+      },
+      {
+        "day_offset": 9,
+        "date": "2026-10-26",
+        "balance": 82.58
+      },
+      {
+        "day_offset": 10,
+        "date": "2026-10-27",
+        "balance": 71.69
+      },
+      {
+        "day_offset": 11,
+        "date": "2026-10-28",
+        "balance": 60.8
+      },
+      {
+        "day_offset": 12,
+        "date": "2026-10-29",
+        "balance": 49.91
+      },
+      {
+        "day_offset": 13,
+        "date": "2026-10-30",
+        "balance": 39.01
+      },
+      {
+        "day_offset": 14,
+        "date": "2026-10-31",
+        "balance": 448.22
+      },
+      {
+        "day_offset": 15,
+        "date": "2026-11-01",
+        "balance": 437.33
+      },
+      {
+        "day_offset": 16,
+        "date": "2026-11-02",
+        "balance": 426.43
+      },
+      {
+        "day_offset": 17,
+        "date": "2026-11-03",
+        "balance": 415.54
+      },
+      {
+        "day_offset": 18,
+        "date": "2026-11-04",
+        "balance": 339.96
+      },
+      {
+        "day_offset": 19,
+        "date": "2026-11-05",
+        "balance": 329.07
+      },
+      {
+        "day_offset": 20,
+        "date": "2026-11-06",
+        "balance": 318.17
+      },
+      {
+        "day_offset": 21,
+        "date": "2026-11-07",
+        "balance": 307.28
+      },
+      {
+        "day_offset": 22,
+        "date": "2026-11-08",
+        "balance": 296.39
+      },
+      {
+        "day_offset": 23,
+        "date": "2026-11-09",
+        "balance": 285.49
+      },
+      {
+        "day_offset": 24,
+        "date": "2026-11-10",
+        "balance": 274.6
+      },
+      {
+        "day_offset": 25,
+        "date": "2026-11-11",
+        "balance": 263.71
+      },
+      {
+        "day_offset": 26,
+        "date": "2026-11-12",
+        "balance": 252.82
+      },
+      {
+        "day_offset": 27,
+        "date": "2026-11-13",
+        "balance": 225.58
+      },
+      {
+        "day_offset": 28,
+        "date": "2026-11-14",
+        "balance": 634.79
+      },
+      {
+        "day_offset": 29,
+        "date": "2026-11-15",
+        "balance": 623.9
+      },
+      {
+        "day_offset": 30,
+        "date": "2026-11-16",
+        "balance": 597.01
+      },
+      {
+        "day_offset": 31,
+        "date": "2026-11-17",
+        "balance": 577.13
+      },
+      {
+        "day_offset": 32,
+        "date": "2026-11-18",
+        "balance": 7.25
+      },
+      {
+        "day_offset": 33,
+        "date": "2026-11-19",
+        "balance": -10.63
+      },
+      {
+        "day_offset": 34,
+        "date": "2026-11-20",
+        "balance": 110.83
+      },
+      {
+        "day_offset": 35,
+        "date": "2026-11-21",
+        "balance": 80.94
+      },
+      {
+        "day_offset": 36,
+        "date": "2026-11-22",
+        "balance": 53.71
+      },
+      {
+        "day_offset": 37,
+        "date": "2026-11-23",
+        "balance": 42.81
+      },
+      {
+        "day_offset": 38,
+        "date": "2026-11-24",
+        "balance": 1.93
+      },
+      {
+        "day_offset": 39,
+        "date": "2026-11-25",
+        "balance": -8.96
+      },
+      {
+        "day_offset": 40,
+        "date": "2026-11-26",
+        "balance": -19.85
+      }
+    ]
   },
   "what_if": {
     "excluded": [

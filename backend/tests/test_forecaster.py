@@ -49,3 +49,17 @@ def test_what_if_cancelling_creep_improves_outlook() -> None:
     assert "GymFlow" in result.excluded
     # Story lock: the Action Desk plays clear the doom day entirely.
     assert result.counterfactual.doom_day is None
+
+
+def test_discount_reduces_bills_in_counterfactual() -> None:
+    """Autopilot downgrade play: recurring bill reduced, not removed."""
+    bundle, recurring = _setup()
+    baseline = project(bundle, recurring, days=40)
+    discounted = project(bundle, recurring, days=40, discounts={"Spotify": 3.0})
+    assert discounted.lowest_balance > baseline.lowest_balance
+    # $3/mo over 40 days with two bills inside the window: +$3 and +$6
+    assert discounted.lowest_balance - baseline.lowest_balance >= 3.0
+
+    wi = what_if(bundle, recurring, discounts={"Spotify": 3.0}, days=40)
+    assert wi.monthly_savings == 3.0
+    assert wi.counterfactual.doom_day is None or wi.counterfactual.doom_day >= baseline.doom_day

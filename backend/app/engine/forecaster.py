@@ -89,24 +89,29 @@ def project(
     days: int = 40,
     exclusions: tuple[str, ...] = (),
     one_time_credits: tuple[float, ...] = (),
+    discounts: dict[str, float] | None = None,
 ) -> ForecastResult:
     """Project daily balances for `days` days. Deterministic.
 
     `one_time_credits` are refunds/fee-waivers assumed to post 3 days out —
     they model Action Desk one-off plays (dispute duplicate, claim waiver).
+    `discounts` maps merchant -> monthly amount subtracted from its recurring
+    bill (Action Desk autopilot downgrade plays).
     """
     anchor = bundle.anchor or date.today()
     end = anchor + timedelta(days=days)
     excluded = set(exclusions)
+    discounts = discounts or {}
 
     # Scheduled outflow events (recurring bills)
     events: list[tuple[date, float]] = []
     for r in recurring:
         if r.merchant in excluded:
             continue
+        billed = r.median_amount - discounts.get(r.merchant, 0.0)
         due = r.dates[-1] + timedelta(days=r.cadence_days)
         while due <= end:
-            events.append((due, -r.median_amount))
+            events.append((due, -billed))
             due += timedelta(days=r.cadence_days)
 
     # Scheduled income events (payroll, remittance, ...)
@@ -162,12 +167,15 @@ def what_if(
     exclusions: tuple[str, ...] = (),
     days: int = 40,
     one_time_credits: tuple[float, ...] = (),
+    discounts: dict[str, float] | None = None,
 ) -> WhatIfResult:
-    """Counterfactual projection with `exclusions` removed from bill schedules
-    and `one_time_credits` (expected refunds/waivers) posting on day 3."""
+    """Counterfactual projection with `exclusions` removed from bill schedules,
+    `one_time_credits` (expected refunds/waivers) posting on day 3, and
+    `discounts` reducing recurring bills — all in the counterfactual only."""
     baseline = project(bundle, recurring, days=days)
     counterfactual = project(
-        bundle, recurring, days=days, exclusions=exclusions, one_time_credits=one_time_credits
+        bundle, recurring, days=days, exclusions=exclusions,
+        one_time_credits=one_time_credits, discounts=discounts,
     )
 
     excluded = set(exclusions)
@@ -176,6 +184,7 @@ def what_if(
         for r in recurring
         if r.merchant in excluded
     )
+    savings += sum(discounts.values()) if discounts else 0.0
     return WhatIfResult(
         excluded=tuple(sorted(excluded)),
         baseline=baseline,

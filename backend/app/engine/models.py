@@ -73,6 +73,7 @@ class LeakFinding:
     evidence_txn_ids: tuple[str, ...] = ()
     playbook: str = PLAYBOOK[LeakType.HIDDEN_FEE]
     score: float | None = None
+    context: dict = field(default_factory=dict)   # detector-specific hints (counts, prices)
 
 
 @dataclass
