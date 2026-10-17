@@ -81,13 +81,58 @@ draft content and explain findings.
 
 ## Submission deliverables (competition checklist)
 
-- [ ] Technical documentation (architecture, core algorithms, security design) → `docs/architecture.md`
+- [x] Technical documentation (architecture, core algorithms, security design) → `docs/architecture.md`
 - [x] Source code with provenance and structure → this repository
-- [ ] Deployment instructions → `README.md` + `docker-compose.yml`
-- [ ] Test cases → `backend/tests/`
-- [ ] Security self-assessment report → `docs/security_self_assessment.md`
-- [ ] Execution evidence (sandbox operation logs + demo video) → `docs/evidence/`, `backend/demo/`
+- [x] Deployment instructions → below + `docker-compose.yml` (backend `Dockerfile`, frontend build + nginx)
+- [x] Test cases → `backend/tests/` (44 tests: policy ladder, detectors, forecaster story locks, end-to-end API flows)
+- [x] Security self-assessment report → `docs/security_self_assessment.md` (permission tiers, prompt-injection stance, known-risk list)
+- [x] Execution evidence (sandbox operation logs) → `docs/evidence/leakradar_first_run.json`, `docs/evidence/actiondesk_first_run.json` (regenerate: `python -m demo.run_demo`)
+- [ ] Demo video (≤5 min) → final phase
 - [ ] Presentation deck (≤10 min) → final phase
+
+## How to open the app (3 minutes)
+
+**Requirements:** Python 3.11+ and Node 20+. All data is synthetic — nothing
+to sign up for.
+
+**A. Fastest — dev mode**
+
+```bash
+# 1) backend
+cd backend
+pip install -r requirements.txt
+python -m uvicorn app.main:app --reload          # http://127.0.0.1:8000/health
+
+# 2) frontend (second terminal)
+cd frontend
+npm install
+npm run dev                                       # open http://localhost:5173
+```
+
+**B. Docker**
+
+```bash
+docker compose up --build                         # app on http://localhost:8080
+```
+
+`docker compose` builds the API and the nginx-served PWA; the frontend
+proxies `/api` to the backend container. Requires Docker Engine v2+.
+
+**C. Headless demo (terminal only)**
+
+```bash
+cd backend
+python -m demo.run_demo
+```
+
+Prints the full three-act session (Leak Radar → Future Oracle → Action Desk
+with live kill-switch enforcement) and writes evidence JSON to
+`docs/evidence/`.
+
+**Optional: LLM-polished drafts** — set `CELENGAN_LLM_ENABLED=true`,
+`CELENGAN_LLM_API_KEY=…` (see §LLM feature flag) and restart the backend.
+Without it, drafts come from the deterministic template: the recommended
+judging configuration.
 
 ## Team
 
