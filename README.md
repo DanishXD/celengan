@@ -40,7 +40,29 @@ python -m venv ../.venv
 
 Health check: open http://127.0.0.1:8000/health
 
-Full quickstart (frontend, seed, demo, deployment) is finalized in the docs phase.
+### Frontend (React PWA)
+
+```bash
+cd frontend
+npm install
+npm run dev        # http://localhost:5173  (proxies /api to 127.0.0.1:8000)
+npm run build      # production build, PWA service worker + manifest included
+```
+
+Requires Node 20+. The dev server proxies `/api` to the backend, so run the
+backend first. All data is the synthetic sandbox user "Maya" — nothing leaves
+the machine.
+
+## PWA pages
+
+| Page | What it shows |
+|---|---|
+| **Dashboard** | Balance, leak totals, doom-day countdown, autopilot budget, 40-day projection chart |
+| **Leak Radar** | Ranked findings with receipts: evidence, confidence, pattern, playbook |
+| **Future Oracle** | Projection chart + what-if simulator (counterfactuals never execute) |
+| **Action Desk** | Permission ladder (Tier 1 drafts / Tier 2 autopilot), kill switch, caps, one-tap undo |
+| **Audit Trail** | Append-only session log: consent changes, policy verdicts, receipts |
+| **Settings** | Feature flags (deterministic core / optional LLM), sandbox reload, about |
 
 ## LLM feature flag
 

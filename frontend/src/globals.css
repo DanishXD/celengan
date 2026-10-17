@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/*
+ * Celengan design tokens — "Forest" family: money-green + bone + coin amber.
+ * One accent (green); amber and alert used sparingly for money/doom signals.
+ * Strategy: semantic CSS variables for colors (dark mode swaps via
+ * prefers-color-scheme), Tailwind maps utilities to these vars.
+ */
+@theme {
+  --font-sans: "Outfit Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+
+  --color-canvas: #faf8f1;
+  --color-surface: #ffffff;
+  --color-surface-warm: #f3f0e5;
+  --color-line: #e5e0d0;
+  --color-line-strong: #d2cbb5;
+  --color-ink: #18241d;
+  --color-ink-soft: #556059;
+  --color-ink-faint: #8a948c;
+
+  --color-piggy: #1e6b47;
+  --color-piggy-strong: #15563b;
+  --color-piggy-soft: #e2efe5;
+
+  --color-coin: #b9862c;
+  --color-coin-soft: #f6ead2;
+  --color-coin-deep: #7a5814;
+
+  --color-alert: #c0452d;
+  --color-alert-strong: #a93b25;
+  --color-alert-soft: #f9e7e1;
+
+  --color-ok: #1f7a4d;
+  --color-ok-soft: #e2efe5;
+
+  --radius-panel: 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-canvas: #0e1712;
+    --color-surface: #15211a;
+    --color-surface-warm: #1a2721;
+    --color-line: #243329;
+    --color-line-strong: #364838;
+    --color-ink: #ece8db;
+    --color-ink-soft: #a8b2aa;
+    --color-ink-faint: #747f78;
+
+    --color-piggy: #47ad7d;
+    --color-piggy-strong: #5cbf8e;
+    --color-piggy-soft: #172a20;
+
+    --color-coin: #e0b45c;
+    --color-coin-soft: #2d2a17;
+    --color-coin-deep: #e8bb63;
+    --color-alert: #e57c63;
+    --color-alert-strong: #c4553f;
+    --color-alert-soft: #2e1d17;
+    --color-ok: #4bbf83;
+    --color-ok-soft: #172a20;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-feature-settings: "ss07" on; /* Outfit: rounder, friendlier digits */
+  }
+  ::selection {
+    background: var(--color-piggy);
+    color: #f7f3e7;
+  }
+  :is(button, a, input, select, textarea, [role="switch"]):focus-visible {
+    outline: 2px solid var(--color-piggy);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* SHAPE LOCK: cards = 20px radius, inputs = 12px, buttons & chips = pill. */
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-panel);
+    box-shadow:
+      0 1px 2px rgb(24 36 29 / 0.05),
+      0 14px 36px -18px rgb(24 36 29 / 0.14);
+  }
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.55rem 1.15rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.12s ease;
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(1px) scale(0.99);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-sm {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+  }
+  .btn-primary {
+    background: var(--color-piggy);
+    color: #f7f3e7;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-piggy-strong);
+  }
+  .btn-outline {
+    border-color: var(--color-line-strong);
+    color: var(--color-ink);
+    background: transparent;
+  }
+  .btn-outline:hover:not(:disabled) {
+    background: var(--color-surface-warm);
+  }
+  .btn-danger {
+    background: var(--color-alert);
+    color: #fdf3ee;
+  }
+  .btn-danger:hover:not(:disabled) {
+    background: var(--color-alert-strong);
+  }
+  .btn-danger-outline {
+    border-color: var(--color-alert);
+    color: var(--color-alert-strong);
+    background: transparent;
+  }
+  .btn-danger-outline:hover:not(:disabled) {
+    background: var(--color-alert-soft);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.22rem 0.7rem;
+    letter-spacing: 0.015em;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .chip-ink {
+    background: var(--color-surface-warm);
+    color: var(--color-ink-soft);
+  }
+  .chip-green {
+    background: var(--color-piggy-soft);
+    color: var(--color-piggy);
+  }
+  .chip-amber {
+    background: var(--color-coin-soft);
+    color: var(--color-coin-deep);
+  }
+  .chip-red {
+    background: var(--color-alert-soft);
+    color: var(--color-alert-strong);
+  }
+  .chip-green-on {
+    background: var(--color-piggy);
+    color: #f0f6ee;
+  }
+  .chip-red-on {
+    background: var(--color-alert);
+    color: #fdf3ee;
+  }
+
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface-warm);
+    border-radius: 0.75rem;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(24 36 29 / 0.07), transparent);
+    animation: shimmer 1.6s infinite;
+  }
+  @keyframes shimmer {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton::after,
+    .fade-up {
+      animation: none;
+    }
+    .btn,
+    .toggle-knob {
+      transition: none;
+    }
+  }
+}

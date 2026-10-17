@@ -54,6 +54,19 @@ def test_what_if_endpoint(client: TestClient) -> None:
     assert body["counterfactual"]["lowest_balance"] > body["baseline"]["lowest_balance"]
 
 
+def test_what_if_with_credits(client: TestClient) -> None:
+    r = client.get("/forecast/what-if?exclude=GymFlow&credits=13.49,15.0&days=40")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["one_time_credits"] == [13.49, 15.0]
+    assert body["counterfactual"]["doom_day"] is None  # story lock holds with credits
+
+
+def test_what_if_bad_credits_400(client: TestClient) -> None:
+    r = client.get("/forecast/what-if?credits=abc")
+    assert r.status_code == 400
+
+
 def test_tier2_rejected_without_consent(client: TestClient) -> None:
     r = client.post("/actions/request", json={"finding_id": "L001", "tier": 2})
     assert r.status_code == 422

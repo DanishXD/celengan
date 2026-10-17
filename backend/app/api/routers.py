@@ -99,10 +99,22 @@ def forecast(days: int = Query(default=40, ge=5, le=120)) -> dict:
 @router.get("/forecast/what-if", response_model=S.WhatIfOut)
 def what_if(
     exclude: str = Query(default="", description="comma-separated merchant names"),
+    credits: str = Query(
+        default="", description="comma-separated one-time credits (e.g. refunds), max 8"
+    ),
     days: int = Query(default=40, ge=5, le=120),
 ) -> S.WhatIfOut:
     exclusions = tuple(m.strip() for m in exclude.split(",") if m.strip())
-    result = engine_what_if(STATE.bundle, STATE.recurring, exclusions=exclusions, days=days)
+    try:
+        one_time = tuple(float(c) for c in credits.split(",") if c.strip())
+    except ValueError:
+        raise HTTPException(status_code=400, detail="credits must be comma-separated numbers")
+    if len(one_time) > 8:
+        raise HTTPException(status_code=400, detail="too many credits (max 8)")
+
+    result = engine_what_if(
+        STATE.bundle, STATE.recurring, exclusions=exclusions, days=days, one_time_credits=one_time
+    )
 
     def to_out(state_name: str, fr) -> S.ForecastOut:
         return S.ForecastOut(
@@ -118,6 +130,7 @@ def what_if(
 
     return S.WhatIfOut(
         excluded=list(result.excluded),
+        one_time_credits=list(one_time),
         monthly_savings=result.monthly_savings,
         baseline=to_out("baseline", result.baseline),
         counterfactual=to_out("counterfactual", result.counterfactual),

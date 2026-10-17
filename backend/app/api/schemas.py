@@ -63,6 +63,7 @@ class ForecastOut(BaseModel):
 
 class WhatIfOut(BaseModel):
     excluded: list[str]
+    one_time_credits: list[float] = Field(default_factory=list)
     monthly_savings: float
     baseline: ForecastOut
     counterfactual: ForecastOut
