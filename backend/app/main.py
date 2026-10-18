@@ -41,5 +41,6 @@ def health() -> dict:
         "version": __version__,
         "sandbox": "synthetic",
         "sandbox_seed": settings.seed,
+        "sandbox_anchor": settings.anchor_date.isoformat(),
         "llm_enabled": bool(settings.llm_enabled and settings.llm_api_key),
     }

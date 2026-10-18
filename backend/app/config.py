@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass, field
+from datetime import date
 from pathlib import Path
 
 try:  # optional .env support
@@ -62,6 +63,12 @@ class Settings:
 
     # Sandbox
     seed: int = field(default_factory=lambda: int(_env("CELENGAN_SEED", "42")))
+
+    # Pinned sandbox "today" — keeps the demo narrative (doom day 2026-11-19,
+    # day offsets, evidence artifacts) identical no matter when it is judged.
+    anchor_date: date = field(
+        default_factory=lambda: date.fromisoformat(_env("CELENGAN_ANCHOR", "2026-10-17"))
+    )
 
 
 settings = Settings()

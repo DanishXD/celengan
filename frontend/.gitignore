@@ -17,3 +17,5 @@ coverage/
 
 # OS
 .DS_Store
+
+*.mjs

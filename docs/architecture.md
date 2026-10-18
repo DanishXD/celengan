@@ -9,9 +9,12 @@
 ## 1. Design principles
 
 1. **Determinism first.** The core pipeline — ingest, normalization, detection,
-   ranking, forecasting, policy — is pure Python with a fixed seed. It runs
-   with zero network access and zero API keys, and every run over the sandbox
-   feed produces byte-identical results.
+   ranking, forecasting, policy — is pure Python with a fixed seed and a
+   pinned anchor day (env `CELENGAN_ANCHOR`, default the submission-date
+   snapshot 2026-10-17). It runs with zero network access and zero API keys,
+   and every run over the sandbox feed produces byte-identical results — the
+   seeded narrative (doom day 2026-11-19, lowest −$19.85, cleared +$66.64)
+   reads the same no matter when it is judged.
 2. **Evidence, not vibes.** Every leak recommendation ships a *receipt*:
    transaction IDs, pattern rationale, confidence, quantified impact, and a
    mapped playbook.
@@ -172,6 +175,12 @@ impact note, and the evidence transaction IDs.
   self-hosted Outfit + JetBrains Mono (tabular numbers for money).
 - **State** — pages own their data via small `useResource` loaders; mutations
   refetch the affected slices. No global client cache to diverge.
+- **Static demo mode** (`VITE_STATIC_DEMO=1`, the auto-deployed GitHub Pages
+  preview) — the engine's frozen snapshot ships as JSON assets and a compact
+  TypeScript port runs the Policy Engine and projection client-side; CI runs
+  a parity test that replays the full demo story through the port and demands
+  exact equality with the Python engine's outputs, so the preview is the same
+  product, not a mock-up.
 - **PWA** — manifest + generated piggy-bank icon set, offline precache of the
   shell; when the backend is unreachable the app renders designed inline
   error banners — every failure state is designed, not accidental.

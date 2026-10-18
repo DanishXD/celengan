@@ -13,6 +13,7 @@ import FutureOracle from "./pages/FutureOracle";
 import ActionDesk from "./pages/ActionDesk";
 import AuditTrail from "./pages/AuditTrail";
 import Settings from "./pages/Settings";
+import { DEMO_MODE } from "./lib/api";
 
 const NAV = [
   { to: "/", label: "Dashboard", icon: PiggyBank, end: true },
@@ -26,7 +27,7 @@ const NAV = [
 function BrandMark({ className }: { className?: string }) {
   return (
     <img
-      src="/favicon.svg"
+      src="./favicon.svg"
       alt="Celengan logo — a piggy bank"
       className={`rounded-[0.7rem] ${className ?? ""}`}
       aria-hidden
@@ -66,6 +67,9 @@ function Sidebar() {
       </nav>
 
       <div className="mt-auto grid gap-2 pr-2">
+        {DEMO_MODE ? (
+          <span className="chip chip-ink w-fit">Static demo · policy runs in-browser</span>
+        ) : null}
         <span className="chip chip-ink w-fit">Sandbox “Maya” · synthetic</span>
         <p className="text-[11px] leading-snug text-ink-faint">
           100% simulated account. No bank connections, no real data, deterministic core.
@@ -80,6 +84,7 @@ function MobileTopBar() {
     <header className="sticky top-0 z-30 flex items-center gap-2.5 border-b border-line bg-canvas/90 px-4 py-2.5 backdrop-blur-md lg:hidden">
       <BrandMark className="h-8 w-8" />
       <span className="text-[15px] font-bold tracking-tight">Celengan</span>
+      {DEMO_MODE ? <span className="chip chip-ink hidden sm:inline-flex">Static demo</span> : null}
       <span className="chip chip-ink ml-auto">Synthetic sandbox</span>
     </header>
   );

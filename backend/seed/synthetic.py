@@ -22,10 +22,19 @@ _START_BALANCE = 1000.0  # calibrated: balance_now ~$301, Doom Day lands ~day 33
                          # (two days before payday) and Action-Desk plays clear it
 
 
-def generate_maya(seed: int = 42, window_days: int = _WINDOW_DAYS) -> SandboxBundle:
-    """Build the deterministic Maya sandbox bundle."""
+def generate_maya(
+    seed: int = 42,
+    window_days: int = _WINDOW_DAYS,
+    anchor: date | None = None,
+) -> SandboxBundle:
+    """Build the deterministic Maya sandbox bundle.
+
+    `anchor` pins "today" (defaults to the run date). The pinned default in
+    settings keeps the demo narrative — doom day 2026-11-19, day offsets,
+    evidence artifacts — byte-identical no matter when the app is judged.
+    """
     rng = random.Random(seed)
-    anchor = date.today()
+    anchor = anchor or date.today()
     start_day = anchor - timedelta(days=window_days)
 
     raw: list[tuple[date, str, float]] = []

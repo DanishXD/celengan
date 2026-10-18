@@ -1,0 +1,100 @@
+{
+ "version": "0.1.0",
+ "app": "Celengan",
+ "mode": "static-demo",
+ "note": "Frozen snapshot of the deterministic engine. Leaks, plays and projection inputs are engine output; the Policy Engine runs client-side in this demo and is verified against the Python original by the parity test in CI.",
+ "user": "Maya",
+ "synthetic": true,
+ "seed": 42,
+ "window_days": 185,
+ "transaction_count": 192,
+ "balance_now": 300.79,
+ "recurring_count": 11,
+ "findings_count": 5,
+ "anchor": "2026-10-17",
+ "burn_daily": 10.892857142857142,
+ "income_series": [
+  {
+   "merchant": "Cafe Mocha Bean (Payroll)",
+   "cadence_days": 14,
+   "amount": 420.1,
+   "last_date": "2026-10-03"
+  },
+  {
+   "merchant": "Worldwide Remittance",
+   "cadence_days": 30,
+   "amount": 191.34,
+   "last_date": "2026-09-21"
+  }
+ ],
+ "recurring": [
+  {
+   "merchant": "Sunset Rooms (Rent)",
+   "cadence_days": 30,
+   "median_amount": 520.0,
+   "last_due": "2026-09-19"
+  },
+  {
+   "merchant": "Spotify",
+   "cadence_days": 30,
+   "median_amount": 9.99,
+   "last_due": "2026-09-19"
+  },
+  {
+   "merchant": "Netflix",
+   "cadence_days": 30,
+   "median_amount": 15.99,
+   "last_due": "2026-09-17"
+  },
+  {
+   "merchant": "CityTrans",
+   "cadence_days": 9,
+   "median_amount": 16.34,
+   "last_due": "2026-10-08"
+  },
+  {
+   "merchant": "CloudDrive",
+   "cadence_days": 30,
+   "median_amount": 8.99,
+   "last_due": "2026-09-18"
+  },
+  {
+   "merchant": "GymFlow",
+   "cadence_days": 30,
+   "median_amount": 29.0,
+   "last_due": "2026-09-19"
+  },
+  {
+   "merchant": "PixelFlix",
+   "cadence_days": 30,
+   "median_amount": 6.99,
+   "last_due": "2026-09-20"
+  },
+  {
+   "merchant": "City Power & Water",
+   "cadence_days": 30,
+   "median_amount": 58.98,
+   "last_due": "2026-09-21"
+  },
+  {
+   "merchant": "NorthMobile",
+   "cadence_days": 30,
+   "median_amount": 19.0,
+   "last_due": "2026-09-22"
+  },
+  {
+   "merchant": "Skynet Cable",
+   "cadence_days": 30,
+   "median_amount": 29.99,
+   "last_due": "2026-09-25"
+  },
+  {
+   "merchant": "Arrowmarket",
+   "cadence_days": 38,
+   "median_amount": 48.35,
+   "last_due": "2026-09-27"
+  }
+ ],
+ "tier2_monthly_cap": 400.0,
+ "tier2_max_single_action": 50.0
+}

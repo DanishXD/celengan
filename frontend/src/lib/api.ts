@@ -1,20 +1,25 @@
-/** Typed API client for the Celengan FastAPI backend.
+/** Typed API client for Celengan.
  *
- * Dev: requests go through the Vite `/api` proxy (no CORS friction).
- * Build: point VITE_API_BASE at any deployed backend.
+ * LIVE mode (default): requests go through the Vite `/api` proxy in dev and
+ * at `VITE_API_BASE` in deployments — the FastAPI backend is the source of
+ * truth.
+ *
+ * STATIC demo mode (VITE_STATIC_DEMO=1, used by the GitHub Pages preview):
+ * the whole session — Policy Engine, drafts, undos, audit — runs client-side
+ * in `src/lib/demo/`, backed by the frozen engine snapshot in
+ * `public/demo-data/`. Response shapes are identical in both modes; CI runs
+ * a parity test proving the port matches the Python engine exactly.
  */
 
-const BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? "/api";
+import { ApiError } from "./ApiError";
+import { makeStaticApi } from "./demo/staticApi";
+import type { CelenganApi } from "./apiTypes";
 
-export class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-  ) {
-    super(message);
-    this.name = "ApiError";
-  }
-}
+export const DEMO_MODE = import.meta.env.VITE_STATIC_DEMO === "1";
+
+/* ------------------------------------------------------------------ live */
+
+const BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? "/api";
 
 async function request<T>(path: string, init?: RequestInit & { json?: unknown }): Promise<T> {
   const { json, headers: extraHeaders, ...rest } = init ?? {};
@@ -40,157 +45,41 @@ async function request<T>(path: string, init?: RequestInit & { json?: unknown })
   return (contentType.includes("json") ? await res.json() : await res.text()) as T;
 }
 
-/* ------------------------------------------------------------------ types */
+const liveApi: CelenganApi = {
+  health: () => request("/health"),
 
-export interface Health {
-  status: string;
-  app: string;
-  version: string;
-  sandbox: string;
-  sandbox_seed: number;
-  llm_enabled: boolean;
-}
+  sandbox: () => request("/sandbox"),
+  reloadSandbox: () => request("/sandbox/reload", { method: "POST" }),
+  transactions: () => request("/transactions"),
 
-export interface Sandbox {
-  user: string;
-  synthetic: boolean;
-  window_days: number;
-  transaction_count: number;
-  balance_now: number;
-  recurring_count: number;
-  findings_count: number;
-}
+  leaks: () => request("/leaks"),
 
-export interface Txn {
-  id: string;
-  date: string;
-  description: string;
-  amount: number;
-  merchant: string | null;
-  category: string | null;
-}
-
-export interface Leak {
-  id: string;
-  type: string;
-  merchant: string;
-  impact_monthly: number;
-  impact_annual: number;
-  confidence: number;
-  title: string;
-  rationale: string;
-  evidence_txn_ids: string[];
-  playbook: string;
-  score: number | null;
-  context: Record<string, unknown>;
-}
-
-export interface LeaksResponse {
-  findings: Leak[];
-  totals: { monthly_impact: number; annual_impact: number };
-}
-
-export interface ForecastPoint {
-  day_offset: number;
-  date: string;
-  balance: number;
-}
-
-export interface Forecast {
-  state: string;
-  window_days: number;
-  doom_day: string | null;
-  lowest_balance: number;
-  applied_exclusions: string[];
-  applied_credits_total: number;
-  applied_discounts: Record<string, number>;
-  points: ForecastPoint[];
-}
-
-export interface ForecastPair {
-  baseline: Forecast;
-  current: Forecast;
-}
-
-export interface WhatIf {
-  excluded: string[];
-  one_time_credits: number[];
-  monthly_savings: number;
-  baseline: Forecast;
-  counterfactual: Forecast;
-}
-
-export interface Play {
-  finding_id: string;
-  playbook: string;
-  tier: number;
-  label: string;
-  effect: string;
-  merchant: string;
-  impact_monthly: number;
-}
-
-export interface Receipt {
-  id: string;
-  created_at: string;
-  finding_id: string;
-  playbook: string;
-  tier: number;
-  status: "draft_ready" | "autopilot_active" | "undone" | string;
-  subject: string;
-  body: string;
-  generator: string;
-  impact_monthly: number;
-  impact_note: string;
-  evidence_txn_ids: string[];
-  undone: boolean;
-}
-
-export interface Consent {
-  tier2_enabled: boolean;
-  kill_switch: boolean;
-  tier2_spent_this_month: number;
-  tier2_monthly_cap: number;
-  tier2_max_single_action: number;
-}
-
-export interface AuditEvent {
-  ts: string;
-  event: string;
-  details: Record<string, unknown>;
-}
-
-/* ---------------------------------------------------------------- endpoints */
-
-export const api = {
-  health: () => request<Health>("/health"),
-
-  sandbox: () => request<Sandbox>("/sandbox"),
-  reloadSandbox: () => request<{ message: string }>("/sandbox/reload", { method: "POST" }),
-  transactions: () => request<Txn[]>("/transactions"),
-
-  leaks: () => request<LeaksResponse>("/leaks"),
-
-  forecast: (days = 40) => request<ForecastPair>(`/forecast?days=${days}`),
+  forecast: (days = 40) => request(`/forecast?days=${days}`),
   whatIf: (exclude: string[], credits: number[], days = 40) =>
-    request<WhatIf>(
+    request(
       `/forecast/what-if?exclude=${encodeURIComponent(exclude.join(","))}` +
         `&credits=${credits.map(String).join(",")}&days=${days}`,
     ),
 
-  plays: () => request<Play[]>("/actions/plays"),
-  requestAction: (body: { finding_id: string; tier: number; confirm: boolean }) =>
-    request<Receipt>("/actions/request", { method: "POST", json: body }),
+  plays: () => request("/actions/plays"),
+  requestAction: (body) => request("/actions/request", { method: "POST", json: body }),
   undo: (receipt_id: string) =>
-    request<Receipt>("/actions/undo", { method: "POST", json: { receipt_id } }),
+    request("/actions/undo", { method: "POST", json: { receipt_id } }),
   killSwitch: (enabled: boolean) =>
-    request<{ message: string }>("/actions/kill-switch", { method: "POST", json: { enabled } }),
+    request("/actions/kill-switch", { method: "POST", json: { enabled } }),
 
-  consent: () => request<Consent>("/consent"),
+  consent: () => request("/consent"),
   setConsent: (enabled: boolean) =>
-    request<Consent>("/consent", { method: "POST", json: { enabled } }),
+    request("/consent", { method: "POST", json: { enabled } }),
 
-  receipts: () => request<Receipt[]>("/receipts"),
+  receipts: () => request("/receipts"),
 
-  audit: (limit = 200) => request<AuditEvent[]>(`/audit?limit=${limit}`),
+  audit: (limit = 200) => request(`/audit?limit=${limit}`),
 };
+
+/* ---------------------------------------------------------------- expose */
+
+export const api: CelenganApi = DEMO_MODE ? makeStaticApi() : liveApi;
+
+export { ApiError } from "./ApiError";
+export * from "./apiTypes";

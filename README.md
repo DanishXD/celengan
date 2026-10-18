@@ -14,6 +14,19 @@ Celengan connects to a simulated open-banking feed and runs three closed loops:
 
 Every recommendation ships with a **receipt**: evidence, reasoning, projected impact. A deterministic, non-LLM **Policy Engine** governs all agent actions.
 
+## 🌐 Live preview (no install)
+
+**https://danishxd.github.io/celengan/**
+
+A self-contained **static demo** built from this repo by CI: the engine's
+frozen sandbox snapshot ships with the app and the Policy Engine runs
+in-browser — consent toggles, Tier-2 activation, caps, undo, kill switch and
+the full audit trail all work. CI runs a parity test
+(`frontend/scripts/parity.ts`) that proves the browser port reproduces the
+Python engine **exactly** (every projected point, doom day, policy reason).
+It is a demo of the same code, not a mock-up. Backend-dependent features
+(ledger view, LLM draft polish) live in the full deployment below.
+
 ## Repository layout
 
 ```
@@ -92,8 +105,15 @@ draft content and explain findings.
 
 ## How to open the app (3 minutes)
 
-**Requirements:** Python 3.11+ and Node 20+. All data is synthetic — nothing
-to sign up for.
+**Requirements:** Python 3.11+ and Node 20+. All data is synthetic — nothing to sign up for.
+
+**0. Fastest of all — the hosted static preview**
+
+```text
+https://danishxd.github.io/celengan/
+```
+
+(see §Live preview above; nothing to install, the policy engine runs in your browser)
 
 **A. Fastest — dev mode**
 

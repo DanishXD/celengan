@@ -75,7 +75,9 @@ class AppState:
     def reload(self) -> None:
         """Rebuild the sandbox session (deterministic seed). Audit log persists."""
         with self._lock:
-            self.bundle: SandboxBundle = generate_maya(seed=settings.seed)
+            self.bundle: SandboxBundle = generate_maya(
+                seed=settings.seed, anchor=settings.anchor_date
+            )
             self.txns = normalize_all(self.bundle.transactions)
             self.recurring = detect_recurring(self.txns)
             self.findings: list[LeakFinding] = rank(
