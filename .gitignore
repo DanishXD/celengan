@@ -25,3 +25,5 @@ dist/
 Thumbs.db
 .idea/
 .vscode/
+
+dist-pages/
